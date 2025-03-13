@@ -14,9 +14,12 @@ app.use((req, res, next) => {
     next();
 });
 app.use(cors({
-    origin: 'http://localhost:3000', // URL del tuo frontend React
+    origin: ['http://localhost:3000', // URL del tuo frontend React
+        'https://lama-blog-pi.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
