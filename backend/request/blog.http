@@ -1,0 +1,38 @@
+### Get all blog posts
+GET http://localhost:5020/api/blogPost
+
+### Get single blog post by ID
+GET http://localhost:5020/api/blogPost/67b8abb3615e6b131be1001e
+### Create new blog post
+POST http://localhost:5020/api/blogPost
+Content-Type: application/json
+
+
+   {
+    "category": "Technology",
+    "title": "My Blog Post",
+    "cover": "image-url",
+    "readTime": {"value": 5, "unit": "minutes"},
+    "authorEmail": "info@3dlama.it",
+    "content": "Post content here"
+}
+
+
+### Update blog post
+PUT http://localhost:5020/api/blogPost/1
+Content-Type: application/json
+
+{
+    "category": "Technology",
+    "title": "Updated Blog Post",
+    "content": "This is the updated content"
+}
+
+### Delete blog post
+DELETE http://localhost:5020/api/blogPost/1
+
+###
+GET  http://localhost:5020/api/authors/67b77c1eb0e85e39d6df4d3a/blogPosts
+
+###
+GET http://localhost:5020/api/blogPosts?title=prova

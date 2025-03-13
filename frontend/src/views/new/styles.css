@@ -1,0 +1,10 @@
+.new-blog-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.new-blog-content {
+  height: 400px;
+  margin-bottom: 80px;
+}

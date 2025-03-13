@@ -1,0 +1,16 @@
+.blog-main-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: #00d66f;
+}
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.blog-main-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1a1a1a;
+}

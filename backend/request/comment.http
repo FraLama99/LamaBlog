@@ -1,0 +1,12 @@
+GET http://localhost:5020/api/blogPost/67b8abb3615e6b131be1001e/comments
+###
+POST http://localhost:5020/api/blogPost/67b8abb3615e6b131be1001e/comments
+Content-Type: application/json
+
+{
+    "text": "This is a comment 2",
+    "user": "67b784af55ccd61f2833294d"
+}
+###
+
+GET http://localhost:5020/api/blogPost/67b8abb3615e6b131be1001e/comments/67c9f760bc31d3c3f3c79cd9
