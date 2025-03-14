@@ -10,6 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Registrazione from "./views/new/Registrazione";
 import Login from "./views/new/login";
 import { AuthProvider } from "./utils/AuthContext.js";
+import Profile from "./components/blog/blog-author/profile.jsx";
+import MyPosts from "./components/blog/blog-author/my-post.jsx";
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -29,10 +31,12 @@ function App() {
             element={<Home searchQuery={searchQuery} />}
           />
           <Route path="/register" element={<Registrazione />} />
-          {/* <Route path="/blog/:id" element={<Blog />} /> */}
+
           <Route path="/blog/:id" element={<BlogDetail />} />
 
           <Route path="/new" element={<NewBlogPost />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/my-posts" element={<MyPosts />} />
         </Routes>
         <Footer />
       </Router>

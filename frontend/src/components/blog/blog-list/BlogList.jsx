@@ -3,7 +3,7 @@ import { Col, Row, Button, Container } from "react-bootstrap";
 import BlogItem from "../blog-item/BlogItem";
 import { useAuth } from "../../../utils/AuthContext";
 
-const BlogList = ({ searchQuery, page = 1, perPage = 10 }) => {
+const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(page);

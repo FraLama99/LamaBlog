@@ -12,8 +12,8 @@ routerPost.get('/blogPost', verifyToken, async (request, response) => {
     console.log('Request user:', request.user);
     try {
         const page = request.query.page || 1;
-        let perPage = request.query.perPage || 5;
-        if (perPage > 10) perPage = 10;
+        let perPage = request.query.perPage || 9; // Changed default to 9
+        if (perPage > 9) perPage = 9;
 
         const totalPosts = await BlogPost.countDocuments();
         const totalPages = Math.ceil(totalPosts / perPage);
@@ -235,7 +235,7 @@ routerPost.post('/blogPost/:blogId/comments', verifyToken, async (request, respo
 
         const savedPost = await BlogPost.findById(blogPost._id).populate({
             path: 'comments.user',
-            select: 'name surname email'
+            select: 'name surname email avatar'
         });
 
         response.status(201).send(savedPost);
@@ -258,11 +258,21 @@ routerPost.put('/blogPost/:blogId/comments/:commentId', verifyToken, async (requ
             return response.status(404).send({ message: 'Comment not found' });
         }
 
-        comment.content = content;
+        // Aggiorna il testo del commento
+        comment.text = content;
         await blogPost.save();
 
-        response.status(200).send(blogPost);
+        // Restituisci il post aggiornato con TUTTI i campi popolati
+        const updatedPost = await BlogPost.findById(request.params.blogId)
+            .populate('author')  // Popola anche l'autore del post
+            .populate({
+                path: 'comments.user',
+                select: 'name surname email avatar'
+            });
+
+        response.status(200).send(updatedPost);
     } catch (error) {
+        console.error('Errore durante la modifica del commento:', error);
         response.status(500).send({ message: error.message });
     }
 });
@@ -276,16 +286,16 @@ routerPost.delete('/blogPost/:blogId/comments/:commentId', verifyToken, async (r
             return response.status(404).send({ message: 'BlogPost not found' });
         }
 
-        const comment = blogPost.comments.id(request.params.commentId);
-        if (!comment) {
-            return response.status(404).send({ message: 'Comment not found' });
-        }
-
-        comment.remove();
+        // Utilizza il metodo pull per rimuovere un elemento da un array in MongoDB
+        blogPost.comments.pull({ _id: request.params.commentId });
         await blogPost.save();
 
-        response.status(200).send({ message: 'Comment deleted successfully' });
+        response.status(200).send({
+            message: 'Comment deleted successfully',
+            blogPost
+        });
     } catch (error) {
+        console.error('Errore durante l\'eliminazione del commento:', error);
         response.status(500).send({ message: error.message });
     }
 });
