@@ -233,13 +233,17 @@ routerPost.post('/blogPost/:blogId/comments', verifyToken, async (request, respo
 
         await blogPost.save();
 
-        const savedPost = await BlogPost.findById(blogPost._id).populate({
-            path: 'comments.user',
-            select: 'name surname email avatar'
-        });
+        // Restituisci il post aggiornato con TUTTI i campi popolati
+        const savedPost = await BlogPost.findById(blogPost._id)
+            .populate('author')  // Popola anche l'autore del post
+            .populate({
+                path: 'comments.user',
+                select: 'name surname email avatar'
+            });
 
         response.status(201).send(savedPost);
     } catch (error) {
+        console.error('Errore durante l\'aggiunta del commento:', error);
         response.status(500).send({ message: error.message });
     }
 });
@@ -290,9 +294,17 @@ routerPost.delete('/blogPost/:blogId/comments/:commentId', verifyToken, async (r
         blogPost.comments.pull({ _id: request.params.commentId });
         await blogPost.save();
 
+        // Restituisci il post aggiornato con TUTTI i campi popolati
+        const updatedPost = await BlogPost.findById(request.params.blogId)
+            .populate('author')  // Popola anche l'autore del post
+            .populate({
+                path: 'comments.user',
+                select: 'name surname email avatar'
+            });
+
         response.status(200).send({
             message: 'Comment deleted successfully',
-            blogPost
+            blogPost: updatedPost  // Restituisci il post completamente popolato
         });
     } catch (error) {
         console.error('Errore durante l\'eliminazione del commento:', error);
