@@ -94,7 +94,7 @@ const NavBar = ({ onSearch }) => {
           </>
         ) : (
           <NavDropdown
-            drop="start"
+            drop="down-centered"
             title={
               <div
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}

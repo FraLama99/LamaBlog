@@ -5,14 +5,18 @@ import routerPost from "./router/post.routes.js";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from 'dotenv';
-
+import googleStrategy from "./middlewares/passport.config.js";
+import passport from "passport";
 /* import items from "./modelli/items.js"; */
 
 const app = express()
+passport.use(googleStrategy);
 app.use((req, res, next) => {
     console.log(`🌐 ${req.method} ${req.url}`);
     next();
 });
+
+
 app.use(cors({
     origin: ['http://localhost:3000', // URL del tuo frontend React
         'https://lama-blog-pi.vercel.app'],

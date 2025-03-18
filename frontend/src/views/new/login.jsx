@@ -19,6 +19,12 @@ const Login = () => {
       [name]: value,
     });
   };
+  const handleGoogleLogin = () => {
+    // Salva lo stato corrente nell'URL o in sessionStorage se necessario
+    sessionStorage.setItem("redirectAfterLogin", "true");
+    localStorage.setItem("pendingGoogleAuth", "true");
+    window.location.href = `${process.env.REACT_APP_API_BASE_URL}/authors/login-google`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,6 +91,27 @@ const Login = () => {
 
             <Button variant="dark" type="submit" className="w-100">
               Login
+            </Button>
+            <Row className="mb-3 mt-4">
+              <Col>
+                <hr />
+                <p className="text-center">oppure</p>
+              </Col>
+            </Row>
+
+            <Button
+              variant="light"
+              type="button"
+              onClick={handleGoogleLogin}
+              className="w-100 d-flex justify-content-center align-items-center gap-2 border"
+              style={{ height: "42px" }}
+            >
+              <img
+                src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/icons/google.svg"
+                alt="Google logo"
+                style={{ width: "20px", height: "20px" }}
+              />
+              Accedi con Google
             </Button>
           </Form>
         </Col>

@@ -1,24 +1,44 @@
 import { useState, useEffect } from "react";
-import { Container, Form, Button /* Row, Col, Card  */ } from "react-bootstrap";
-/* import { Editor } from "react-draft-wysiwyg"; */
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./styles.css";
-/* import { convertToRaw, EditorState } from "draft-js";
-import draftToHtml from "draftjs-to-html"; */
+import { useAuth } from "../../utils/AuthContext";
 
 const Registrazione = () => {
   const [authors, setAuthors] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  // Usa login invece di accedere direttamente a setLoggedIn e setUser
+  const { login } = useAuth();
+
   const [newAuthor, setNewAuthor] = useState({
     name: "",
     surname: "",
     email: "",
     birth_date: "",
     avatar: "",
-    password: "", // aggiungi il campo password
+    password: "",
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+      console.log("Token salvato nel localStorage:", token);
+
+      // Usa la funzione login invece di verifyToken
+      login(token).then(() => {
+        navigate("/", { replace: true });
+      });
+    }
+  }, [location, navigate, login]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewAuthor((prev) => ({
@@ -26,17 +46,16 @@ const Registrazione = () => {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verifica che le password coincidano
     if (newAuthor.password !== confirmPassword) {
       alert("Le password non coincidono");
       return;
     }
 
     await createAuthor(newAuthor);
-    // Reset form
     setNewAuthor({
       name: "",
       surname: "",
@@ -48,7 +67,6 @@ const Registrazione = () => {
     setConfirmPassword("");
   };
 
-  // GET - Recupera tutti gli autori
   const fetchAuthors = async () => {
     try {
       const response = await fetch(
@@ -61,28 +79,25 @@ const Registrazione = () => {
     }
   };
 
-  // POST - Crea un nuovo autore
   const createAuthor = async (authorData) => {
     try {
       const formData = new FormData();
 
-      // Verifica che i campi obbligatori non siano vuoti
       if (
         !authorData.name ||
         !authorData.surname ||
         !authorData.email ||
         !authorData.birth_date ||
-        !authorData.password // Aggiungi controllo password
+        !authorData.password
       ) {
         throw new Error("Tutti i campi sono obbligatori");
       }
 
-      // Aggiungi i dati al FormData
       formData.append("name", authorData.name.trim());
       formData.append("surname", authorData.surname.trim());
       formData.append("email", authorData.email.trim());
       formData.append("birth_date", authorData.birth_date);
-      formData.append("password", authorData.password); // Aggiungi password al FormData
+      formData.append("password", authorData.password);
 
       if (authorData.avatar instanceof File) {
         formData.append("avatar", authorData.avatar);
@@ -97,7 +112,6 @@ const Registrazione = () => {
         }
       );
 
-      // Verifica prima il content-type della risposta
       const contentType = response.headers.get("content-type");
       if (!response.ok) {
         if (contentType && contentType.includes("application/json")) {
@@ -111,32 +125,30 @@ const Registrazione = () => {
       const data = await response.json();
       console.log("Risposta dal server:", data);
       fetchAuthors();
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        // Usa login invece di setLoggedIn e setUser
+        await login(data.token);
+      }
+
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Errore durante il caricamento:", error);
-      alert(error.message); // Mostra l'errore all'utente
-    }
-  };
-  // DELETE - Elimina un autore
-  const deleteAuthor = async (id) => {
-    try {
-      const response = await fetch(`REACT_APP_API_BASE_URL/authors/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        // Aggiorna la lista degli autori dopo l'eliminazione
-        fetchAuthors();
-      }
-    } catch (error) {
-      console.error("Errore durante l'eliminazione:", error);
+      alert(error.message);
     }
   };
 
   useEffect(() => {
     fetchAuthors();
   }, []);
+
+  const handleGoogleLogin = () => {
+    // Salva lo stato corrente nell'URL o in sessionStorage se necessario
+    sessionStorage.setItem("redirectAfterLogin", "true");
+    localStorage.setItem("pendingGoogleAuth", "true");
+    window.location.href = `${process.env.REACT_APP_API_BASE_URL}/authors/login-google`;
+  };
 
   return (
     <Container className="new-blog-container">
@@ -248,9 +260,33 @@ const Registrazione = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Aggiungi Autore
+        <Row className="mb-3 mt-4">
+          <Col>
+            <hr />
+            <p className="text-center">oppure</p>
+          </Col>
+        </Row>
+
+        <Button
+          variant="light"
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-100 d-flex justify-content-center align-items-center gap-2 border"
+          style={{ height: "42px" }}
+        >
+          <img
+            src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/icons/google.svg"
+            alt="Google logo"
+            style={{ width: "20px", height: "20px" }}
+          />
+          Registrati con Google
         </Button>
+
+        <div className="mt-3">
+          <Button variant="primary" type="submit" className="w-100">
+            Aggiungi Autore
+          </Button>
+        </div>
       </Form>
     </Container>
   );

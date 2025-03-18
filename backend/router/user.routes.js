@@ -5,6 +5,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import verifyToken from "../middlewares/authMidd.js";
 import uploadCloudinary from "../middlewares/uploadCloudinary.js";
+import mailer from "../middlewares/mailer.js";
+import passport from "passport";
+import GoogleStrategy from "passport-google-oauth20";
 
 const routerAuthore = Router() //creo il router che fa gli insirizzi
 
@@ -31,17 +34,6 @@ routerAuthore.get('/authors/me', verifyToken, async (request, response) => {
 });
 
 
-routerAuthore.get('/authors/:userId', async (request, response) => {
-    try {
-        const author = await Author.findById(request.params.userId);
-        if (!author) {
-            return response.status(404).send({ message: 'Author not found' });
-        }
-        response.status(200).send(author);
-    } catch (error) {
-        response.status(500).send({ message: error.message });
-    }
-})
 
 
 
@@ -69,6 +61,22 @@ routerAuthore.post('/authors', uploadCloudinary.single('avatar'), async (request
         });
 
         const savedAuthor = await newAuthor.save();
+
+        await mailer.sendMail({
+            from: 'info@3dlama.it', // indirizzo mittente
+            to: request.body.email, // indirizzo destinatario
+            subject: 'Benvenuto su LamaBlog', // oggetto
+            text: `Benvenuto ${request.body.name} ${request.body.surname}! Grazie per esserti registrato con Google.`, // corpo testo
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 5px;">
+                    <h2 style="color: #4285f4;">Benvenuto su LamaBlog!</h2>
+                    <p>Ciao <strong>${request.body.name} ${request.body.surname}</strong>,</p>
+                    <p>Grazie per esserti registrato tramite Google. Il tuo account è stato creato con successo.</p>
+                    <p>Puoi ora accedere a tutte le funzionalità del nostro blog.</p>
+                    <p>Cordiali saluti,<br>Il team di LamaBlog</p>
+                </div>
+            `, // corpo HTML
+        });
         return response.status(201).json(savedAuthor);
 
     } catch (error) {
@@ -117,6 +125,20 @@ routerAuthore.post('/authors/login', async (request, response) => {
 
 });
 
+routerAuthore.get('/authors/login-google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+
+routerAuthore.get('/authors/callback-google', passport.authenticate('google', { session: false }),
+
+    (request, response, next) => {
+
+        response.redirect(
+            process.env.FRONTEND_HOST + '/register?token=' + request.user.jwtToken
+        );
+    }
+);
+
+
 
 /* const getUserData = async () => {
     const token = localStorage.getItem('token');
@@ -132,6 +154,19 @@ routerAuthore.post('/authors/login', async (request, response) => {
     return null;
   };
  */
+
+routerAuthore.get('/authors/:userId', async (request, response) => {
+    try {
+        const author = await Author.findById(request.params.userId);
+        if (!author) {
+            return response.status(404).send({ message: 'Author not found' });
+        }
+        response.status(200).send(author);
+    } catch (error) {
+        response.status(500).send({ message: error.message });
+    }
+})
+
 routerAuthore.patch('/authors/:userId/avatar', verifyToken, uploadCloudinary.single('avatar'), async (request, response, next) => {
     try {
         const author = await Author.findById(request.params.userId);

@@ -1,4 +1,10 @@
 GET http://localhost:5020/api/authors
+###
+GET http://localhost:5020/api/authors/login-google
+
+
+###
+GET http://localhost:5020/api/authors/callback-google
 
 ###
 GET http://localhost:5020/api/authors/:id
@@ -40,3 +46,4 @@ Content-Type: application/json
 
 GET http://localhost:5020/api/authors/me
  
+
