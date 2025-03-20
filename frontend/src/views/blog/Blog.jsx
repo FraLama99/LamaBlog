@@ -42,7 +42,7 @@ const Blog = (props) => {
                   marginTop: 20,
                 }}
               >
-                <BlogLike defaultLikes={["123"]} onChange={console.log} />
+                <BlogLike postId={blog._id} />
               </div>
             </div>
           </div>

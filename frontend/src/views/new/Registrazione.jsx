@@ -30,7 +30,7 @@ const Registrazione = () => {
 
     if (token) {
       localStorage.setItem("token", token);
-      console.log("Token salvato nel localStorage:", token);
+      /* console.log("Token salvato nel localStorage:", token); */
 
       // Usa la funzione login invece di verifyToken
       login(token).then(() => {

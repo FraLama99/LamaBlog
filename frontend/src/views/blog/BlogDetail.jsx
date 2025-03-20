@@ -223,10 +223,7 @@ const BlogDetail = () => {
               {/* Interazioni */}
               <div className="d-flex justify-content-between align-items-center border-top pt-3">
                 <div className="blog-detail-likes">
-                  <BlogLike
-                    defaultLikes={post.likes || []}
-                    onChange={handleLikesChange}
-                  />
+                  <BlogLike postId={post._id} />
                 </div>
                 <div>
                   <small className="text-muted">

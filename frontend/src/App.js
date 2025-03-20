@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import NavBar from "./components/navbar/BlogNavbar";
 import Footer from "./components/footer/Footer";
 import Home from "./views/home/Home";
-import Blog from "./views/blog/Blog";
 import BlogDetail from "./views/blog/BlogDetail";
 import NewBlogPost from "./views/new/New";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -12,6 +11,10 @@ import Login from "./views/new/login";
 import { AuthProvider } from "./utils/AuthContext.js";
 import Profile from "./components/blog/blog-author/profile.jsx";
 import MyPosts from "./components/blog/blog-author/my-post.jsx";
+import './utils/api';
+
+
+
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
 

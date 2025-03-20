@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import "dotenv/config";
 import routerAuthore from "./router/user.routes.js";
 import routerPost from "./router/post.routes.js";
+import likeRouter from './router/like.routes.js';
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from 'dotenv';
@@ -19,7 +20,8 @@ app.use((req, res, next) => {
 
 app.use(cors({
     origin: ['http://localhost:3000', // URL del tuo frontend React
-        'https://lama-blog-pi.vercel.app'],
+        'https://lama-blog-pi.vercel.app',
+        'https://lamablog-e0tm.onrender.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -29,6 +31,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/api", routerAuthore);
 app.use("/api", routerPost);  // aggiungi un prefisso per le route
+app.use('/api', likeRouter);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
