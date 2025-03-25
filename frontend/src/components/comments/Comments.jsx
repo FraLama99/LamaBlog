@@ -284,7 +284,7 @@ const Comments = ({
                 />
               </Form.Group>
               <div className="text-end">
-                <Button type="submit" variant="primary" disabled={loading}>
+                <Button type="submit" variant="warning" disabled={loading}>
                   {loading ? (
                     <>
                       <Spinner

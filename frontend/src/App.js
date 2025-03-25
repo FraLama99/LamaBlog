@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import reactbootstrap from "react-bootstrap";
 import NavBar from "./components/navbar/BlogNavbar";
 import Footer from "./components/footer/Footer";
 import Home from "./views/home/Home";
@@ -23,7 +24,7 @@ function App() {
   };
 
   return (
-    <AuthProvider>
+    <AuthProvider >
       <Router>
         <NavBar onSearch={handleSearch} />
         <Routes>

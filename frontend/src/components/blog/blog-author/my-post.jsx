@@ -252,7 +252,7 @@ const MyPosts = () => {
     <Container className="mt-5 pt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>I Miei Post</h1>
-        <Button as={Link} to="/new" variant="primary">
+        <Button as={Link} to="/new" variant="success">
           <i className="bi bi-plus-lg me-1"></i> Nuovo Post
         </Button>
       </div>

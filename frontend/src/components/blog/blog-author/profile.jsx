@@ -281,7 +281,7 @@ const Profile = () => {
                   {formatDate(user?.birth_date)}
                 </p>
                 <Button
-                  variant="primary"
+                  variant="danger"
                   onClick={() => setEditing(true)}
                   className="mt-3"
                 >
@@ -366,7 +366,7 @@ const Profile = () => {
                     />
                   </Form.Group>
                   <div className="d-flex gap-2 mt-3">
-                    <Button variant="primary" type="submit" disabled={loading}>
+                    <Button variant="warning" type="submit" disabled={loading}>
                       {loading ? (
                         <>
                           <Spinner
@@ -412,7 +412,7 @@ const Profile = () => {
       <div className="mt-5">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3>I miei post</h3>
-          <Button as={Link} to="/new" variant="outline-primary">
+          <Button as={Link} to="/new" variant="outline-danger" size="sm">
             <i className="bi bi-plus-lg me-1"></i> Nuovo post
           </Button>
         </div>
@@ -433,7 +433,7 @@ const Profile = () => {
                     <Button
                       as={Link}
                       to={`/blog/${post._id}`}
-                      variant="primary"
+                      variant="outline-success"
                       size="sm"
                     >
                       Leggi post

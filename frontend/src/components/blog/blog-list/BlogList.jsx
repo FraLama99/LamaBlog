@@ -70,7 +70,7 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
       <Row className="mb-4 justify-content-center">
         <Col xs="auto">
           <Button
-            variant="outline-primary"
+            variant="outline-warning"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -82,7 +82,7 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
         </Col>
         <Col xs="auto">
           <Button
-            variant="outline-primary"
+            variant="outline-warning"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
@@ -110,7 +110,7 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
       <Row className="mt-4 justify-content-center">
         <Col xs="auto">
           <Button
-            variant="outline-primary"
+            variant="outline-warning"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -122,7 +122,7 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
         </Col>
         <Col xs="auto">
           <Button
-            variant="outline-primary"
+            variant="outline-warning"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >

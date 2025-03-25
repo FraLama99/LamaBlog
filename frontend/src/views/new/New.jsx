@@ -189,7 +189,7 @@ const NewBlogPost = () => {
         </Form.Group>
 
         <div className="d-flex gap-2 justify-content-end mt-3">
-          <Button type="submit" variant="primary" disabled={isLoading}>
+          <Button type="submit" variant="success" disabled={isLoading}>
             {isLoading ? "Pubblicazione in corso..." : "Pubblica Post"}
           </Button>
         </div>

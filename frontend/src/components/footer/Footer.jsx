@@ -9,7 +9,9 @@ const Footer = (props) => {
         paddingBottom: 50,
       }}
     >
-      <Container>{`${new Date().getFullYear()} - © Strive School | Developed for homework projects.`}</Container>
+      <Container>
+        {`${new Date().getFullYear()} - © BTG System | This is a demo page created for a developer course examination. For educational and display purposes only.`}
+      </Container>
     </footer>
   );
 };
