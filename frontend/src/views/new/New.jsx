@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Form, Alert } from "react-bootstrap";
-import { useAuth } from "../../utils/AuthContext"; // Aggiungi questo import
+import { useAuth } from "../../utils/AuthContext";
 import "./styles.css";
 
 const initialState = {
@@ -18,11 +18,10 @@ const NewBlogPost = () => {
   const [formData, setFormData] = useState(initialState);
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Sposta qui la dichiarazione
+  const [isLoading, setIsLoading] = useState(false);
 
   const resetForm = () => {
     setFormData(initialState);
-    // Reset anche il campo file se presente
     const fileInput = document.querySelector('input[type="file"]');
     if (fileInput) fileInput.value = "";
   };
@@ -59,7 +58,7 @@ const NewBlogPost = () => {
     e.preventDefault();
     setSuccessMessage("");
     setError("");
-    setIsLoading(true); // Imposta loading a true all'inizio
+    setIsLoading(true);
 
     try {
       const token = localStorage.getItem("token");
@@ -115,7 +114,7 @@ const NewBlogPost = () => {
       console.error("Errore:", error);
       setError(error.message || "Errore durante la creazione del post");
     } finally {
-      setIsLoading(false); // Imposta sempre loading a false alla fine
+      setIsLoading(false);
     }
   };
 

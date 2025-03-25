@@ -2,15 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { Button } from "react-bootstrap";
 import axios from "axios";
-import { useAuth } from "../../utils/AuthContext"; // Usa il contesto Auth esistente
+import { useAuth } from "../../utils/AuthContext";
 
 export default function BlogLike({ postId }) {
   const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { isAuthenticated, getToken } = useAuth(); // Usa i metodi dal tuo AuthContext
+  const { isAuthenticated, getToken } = useAuth();
 
-  // Funzione per controllare se l'utente ha già messo like
   const checkLikeStatus = useCallback(async () => {
     try {
       if (!isAuthenticated) return;
@@ -31,7 +30,6 @@ export default function BlogLike({ postId }) {
     }
   }, [isAuthenticated, getToken, postId]);
 
-  // Funzione per ottenere il conteggio dei like
   const fetchLikeCount = useCallback(async () => {
     try {
       const response = await axios.get(
@@ -45,7 +43,6 @@ export default function BlogLike({ postId }) {
     }
   }, [postId]);
 
-  // Carica i dati iniziali
   useEffect(() => {
     if (postId) {
       fetchLikeCount();
@@ -53,7 +50,6 @@ export default function BlogLike({ postId }) {
     }
   }, [postId, isAuthenticated, fetchLikeCount, checkLikeStatus]);
 
-  // Funzione per gestire il toggle del like
   const toggleLike = async () => {
     if (!isAuthenticated) {
       alert("Devi effettuare l'accesso per mettere like");
@@ -74,7 +70,6 @@ export default function BlogLike({ postId }) {
         }
       );
 
-      // Aggiorna lo stato in base alla risposta
       setIsLiked(response.data.status === "liked");
       setLikeCount(response.data.likeCount);
     } catch (error) {

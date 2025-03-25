@@ -34,7 +34,7 @@ const authorSchema = new Schema({
         minlength: 8
     },
     avatar: {
-        type: String,  // Modifica da Buffer a String
+        type: String,
         required: false
     },
     role: {

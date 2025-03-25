@@ -20,7 +20,6 @@ const Login = () => {
     });
   };
   const handleGoogleLogin = () => {
-    // Salva lo stato corrente nell'URL o in sessionStorage se necessario
     sessionStorage.setItem("redirectAfterLogin", "true");
     localStorage.setItem("pendingGoogleAuth", "true");
     window.location.href = `${process.env.REACT_APP_API_BASE_URL}/authors/login-google`;
@@ -43,10 +42,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Salviamo solo il token nel localStorage
         localStorage.setItem("token", data.token);
-
-        // Aggiorniamo il contesto di autenticazione
         await login(data.token);
         navigate("/", { replace: true });
       } else {

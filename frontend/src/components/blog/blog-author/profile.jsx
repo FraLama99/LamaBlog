@@ -16,7 +16,6 @@ import { useAuth } from "../../../utils/AuthContext";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
-  // Stati per la gestione del profilo
   const { isAuthenticated, getToken } = useAuth();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +36,6 @@ const Profile = () => {
   });
   const [userPosts, setUserPosts] = useState([]);
 
-  // Recupera i dati dell'utente dal server
   const fetchUserData = async () => {
     try {
       setLoading(true);
@@ -69,7 +67,6 @@ const Profile = () => {
         avatar: null,
       });
 
-      // Recupera i post dell'utente
       fetchUserPosts(response.data._id, token);
 
       setLoading(false);
@@ -82,7 +79,6 @@ const Profile = () => {
     }
   };
 
-  // Recupera i post dell'utente
   const fetchUserPosts = async (userId, token) => {
     try {
       const response = await axios.get(
@@ -97,7 +93,6 @@ const Profile = () => {
     }
   };
 
-  // Effetto per caricare i dati dell'utente quando il componente si monta
   useEffect(() => {
     if (isAuthenticated) {
       fetchUserData();
@@ -107,7 +102,6 @@ const Profile = () => {
     }
   }, [isAuthenticated]);
 
-  // Gestisce i cambiamenti nei campi del form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -116,7 +110,6 @@ const Profile = () => {
     }));
   };
 
-  // Gestisce il caricamento dell'immagine
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -125,7 +118,6 @@ const Profile = () => {
         avatar: file,
       }));
 
-      // Crea una preview dell'immagine
       const reader = new FileReader();
       reader.onload = () => {
         setAvatarPreview(reader.result);
@@ -134,14 +126,12 @@ const Profile = () => {
     }
   };
 
-  // Gestisce l'invio del form per l'aggiornamento del profilo
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const token = getToken();
 
-      // Aggiorna i dati del profilo
       await axios.put(
         `${process.env.REACT_APP_API_BASE_URL}/authors/${user._id}`,
         {
@@ -158,7 +148,6 @@ const Profile = () => {
         }
       );
 
-      // Se c'è una nuova immagine, caricala
       if (formData.avatar) {
         const avatarFormData = new FormData();
         avatarFormData.append("avatar", formData.avatar);
@@ -175,7 +164,6 @@ const Profile = () => {
         );
       }
 
-      // Recupera i dati aggiornati
       await fetchUserData();
 
       setEditing(false);
@@ -202,7 +190,6 @@ const Profile = () => {
     }
   };
 
-  // Formatta la data
   const formatDate = (dateString) => {
     if (!dateString) return "";
     try {
@@ -408,7 +395,6 @@ const Profile = () => {
         </Card>
       )}
 
-      {/* Sezione per i post dell'utente */}
       <div className="mt-5">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3>I miei post</h3>

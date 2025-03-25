@@ -32,7 +32,6 @@ const NavBar = ({ onSearch }) => {
       if (response.ok) {
         const data = await response.json();
 
-        // Modifica questa riga: usa direttamente data invece di data.author
         setUserData(data);
       } else {
         console.error("Errore nella risposta:", response.status);
@@ -50,10 +49,10 @@ const NavBar = ({ onSearch }) => {
     } else {
       setUserData(null);
     }
-  }, [isAuthenticated]); // Dipendenza solo da isAuthenticated
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
-    setUserData(null); // Pulisci i dati utente
+    setUserData(null);
     logout();
     navigate("/login");
   };

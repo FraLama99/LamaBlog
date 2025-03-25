@@ -6,7 +6,7 @@ const storageGigi = multer.diskStorage({
     filename: (req, file, callback) => {
         console.log(file);
         callback(null, Date.now() + path.extname(file.originalname));
-        // path.extname fa questo: candele.jpg --> .jpg - node.pdf --> .pdf
+
     },
 });
 

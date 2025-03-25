@@ -9,7 +9,7 @@ import mailer from "../middlewares/mailer.js";
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 
-const routerAuthore = Router() //creo il router che fa gli insirizzi
+const routerAuthore = Router()
 
 
 routerAuthore.get('/authors', async (request, response) => {
@@ -63,10 +63,10 @@ routerAuthore.post('/authors', uploadCloudinary.single('avatar'), async (request
         const savedAuthor = await newAuthor.save();
 
         await mailer.sendMail({
-            from: 'info@3dlama.it', // indirizzo mittente
-            to: request.body.email, // indirizzo destinatario
-            subject: 'Benvenuto su LamaBlog', // oggetto
-            text: `Benvenuto ${request.body.name} ${request.body.surname}! Grazie per esserti registrato con Google.`, // corpo testo
+            from: 'info@3dlama.it',
+            to: request.body.email,
+            subject: 'Benvenuto su LamaBlog',
+            text: `Benvenuto ${request.body.name} ${request.body.surname}! Grazie per esserti registrato con Google.`,
             html: `
                 <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 5px;">
                     <h2 style="color: #4285f4;">Benvenuto su LamaBlog!</h2>
@@ -75,7 +75,7 @@ routerAuthore.post('/authors', uploadCloudinary.single('avatar'), async (request
                     <p>Puoi ora accedere a tutte le funzionalità del nostro blog.</p>
                     <p>Cordiali saluti,<br>Il team di LamaBlog</p>
                 </div>
-            `, // corpo HTML
+            `,
         });
         return response.status(201).json(savedAuthor);
 
@@ -108,7 +108,6 @@ routerAuthore.post('/authors/login', async (request, response) => {
         const token = jwt.sign({ id: author._id }, process.env.JWT_SECRET, { expiresIn: '1 day' });
         const authorWithoutPassword = author.toObject();
         delete authorWithoutPassword.password;
-        // Imposta il token nell'header Authorization
         response.set('Authorization', `Bearer ${token}`);
         response.status(200).send({
             message: 'Login successful',
@@ -140,20 +139,6 @@ routerAuthore.get('/authors/callback-google', passport.authenticate('google', { 
 
 
 
-/* const getUserData = async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5020/api/authors/me', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    if (response.ok) {
-      const userData = await response.json();
-      return userData;
-    }
-    return null;
-  };
- */
 
 routerAuthore.get('/authors/:userId', async (request, response) => {
     try {
@@ -188,7 +173,6 @@ routerAuthore.patch('/authors/:userId/avatar', verifyToken, uploadCloudinary.sin
 
 routerAuthore.put('/authors/:userId', verifyToken, async (request, response) => {
     try {
-        // Verifica se l'utente che fa la richiesta è lo stesso dell'ID nei parametri
         if (request.user.id !== request.params.userId) {
             return response.status(403).send({
                 message: 'Non hai i permessi per modificare questo profilo',
@@ -225,7 +209,6 @@ routerAuthore.put('/authors/:userId', verifyToken, async (request, response) => 
 
 routerAuthore.delete('/authors/:userId', verifyToken, async (request, response) => {
     try {
-        // Verifica se l'utente che fa la richiesta è lo stesso dell'ID nei parametri
         if (request.user.id !== request.params.userId) {
             return response.status(403).send({
                 message: 'Non hai i permessi per eliminare questo profilo',
@@ -278,4 +261,4 @@ routerAuthore.use((error, req, res, next) => {
     });
 });
 
-export default routerAuthore; //esporto il router che fa gli insirizzi
+export default routerAuthore; 

@@ -33,7 +33,6 @@ const Comments = ({
   const [loading, setLoading] = useState(false);
   const commentSectionRef = useRef(null);
 
-  // Aggiunge un commento
   const handleAddComment = async (e) => {
     e.preventDefault();
 
@@ -74,7 +73,6 @@ const Comments = ({
         }
       );
 
-      // Chiamiamo la callback per notificare il componente padre
       onCommentAdded(response.data);
 
       setNewComment("");
@@ -84,7 +82,6 @@ const Comments = ({
         message: "Commento aggiunto con successo!",
       });
 
-      // Scroll ai commenti
       setTimeout(() => {
         if (commentSectionRef.current) {
           commentSectionRef.current.scrollIntoView({ behavior: "smooth" });
@@ -114,13 +111,11 @@ const Comments = ({
     }
   };
 
-  // Avvia la modifica di un commento
   const startEditComment = (comment) => {
     setEditingComment(comment._id);
     setEditedCommentText(comment.text);
   };
 
-  // Salva le modifiche al commento
   const handleEditComment = async () => {
     if (!editedCommentText.trim()) return;
 
@@ -149,7 +144,6 @@ const Comments = ({
         }
       );
 
-      // Notifica il componente padre
       onCommentUpdated(response.data);
 
       setEditingComment(null);
@@ -175,13 +169,11 @@ const Comments = ({
     }
   };
 
-  // Conferma eliminazione commento
   const confirmDeleteComment = (commentId) => {
     setCommentToDelete(commentId);
     setShowDeleteModal(true);
   };
 
-  // Elimina il commento
   const handleDeleteComment = async () => {
     const token = getToken();
     if (!token) {
@@ -204,7 +196,6 @@ const Comments = ({
         }
       );
 
-      // Notifica il componente padre
       onCommentDeleted(commentToDelete);
 
       setShowDeleteModal(false);
@@ -231,7 +222,6 @@ const Comments = ({
     }
   };
 
-  // Verifica se l'utente può modificare o eliminare un commento
   const canEditComment = (comment) => {
     return (
       isAuth && userData && comment.user && userData._id === comment.user._id
@@ -268,7 +258,6 @@ const Comments = ({
         </Card.Header>
 
         <Card.Body className="p-4">
-          {/* Form per aggiungere commento */}
           {isAuth && userData ? (
             <Form onSubmit={handleAddComment} className="mb-4">
               <Form.Group className="mb-3">
@@ -309,7 +298,6 @@ const Comments = ({
             </Alert>
           )}
 
-          {/* Lista dei commenti */}
           {post.comments?.length > 0 ? (
             <div className="comment-list">
               {post.comments.map((comment) => (
@@ -379,7 +367,6 @@ const Comments = ({
                             </div>
                           </div>
 
-                          {/* Pulsanti di modifica/eliminazione */}
                           <div className="d-flex gap-2">
                             {canEditComment(comment) && (
                               <Button
@@ -419,7 +406,6 @@ const Comments = ({
         </Card.Body>
       </Card>
 
-      {/* Modal di conferma eliminazione commento */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Conferma eliminazione</Modal.Title>

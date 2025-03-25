@@ -21,7 +21,6 @@ const Home = ({ searchQuery }) => {
           />
         </>
       ) : (
-        // Contenuto per utenti non autenticati
         <Row className="justify-content-center mt-5 min-vh-100">
           <Col xs={12} md={8} className="text-center">
             <h1 className="mb-4">Benvenuto su LamaBlog</h1>

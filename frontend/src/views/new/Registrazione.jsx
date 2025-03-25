@@ -12,7 +12,6 @@ const Registrazione = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  // Usa login invece di accedere direttamente a setLoggedIn e setUser
   const { login } = useAuth();
 
   const [newAuthor, setNewAuthor] = useState({
@@ -30,9 +29,6 @@ const Registrazione = () => {
 
     if (token) {
       localStorage.setItem("token", token);
-      /* console.log("Token salvato nel localStorage:", token); */
-
-      // Usa la funzione login invece di verifyToken
       login(token).then(() => {
         navigate("/", { replace: true });
       });
@@ -128,7 +124,6 @@ const Registrazione = () => {
 
       if (data.token) {
         localStorage.setItem("token", data.token);
-        // Usa login invece di setLoggedIn e setUser
         await login(data.token);
       }
 
@@ -144,7 +139,6 @@ const Registrazione = () => {
   }, []);
 
   const handleGoogleLogin = () => {
-    // Salva lo stato corrente nell'URL o in sessionStorage se necessario
     sessionStorage.setItem("redirectAfterLogin", "true");
     localStorage.setItem("pendingGoogleAuth", "true");
     window.location.href = `${process.env.REACT_APP_API_BASE_URL}/authors/login-google`;

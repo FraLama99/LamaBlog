@@ -8,12 +8,12 @@ const likeSchema = new mongoose.Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Author', // o 'User' se utilizzi un modello diverso
+        ref: 'Author',
         required: true
     }
 }, { timestamps: true });
 
-// Indice composto per garantire unicità e query efficienti
+
 likeSchema.index({ post: 1, user: 1 }, { unique: true });
 
 export default mongoose.model('Like', likeSchema);

@@ -31,7 +31,6 @@ const MyPosts = () => {
     message: "",
   });
 
-  // Form data per la modifica del post
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -42,7 +41,6 @@ const MyPosts = () => {
     },
   });
 
-  // Recupera i dati dell'utente dal server
   const fetchUserData = async () => {
     try {
       setLoading(true);
@@ -65,7 +63,6 @@ const MyPosts = () => {
 
       setUser(response.data);
 
-      // Recupera i post dell'utente
       fetchUserPosts(response.data._id, token);
     } catch (err) {
       console.error("Errore:", err);
@@ -76,7 +73,6 @@ const MyPosts = () => {
     }
   };
 
-  // Recupera i post dell'utente
   const fetchUserPosts = async (userId, token) => {
     try {
       const response = await axios.get(
@@ -93,13 +89,11 @@ const MyPosts = () => {
     }
   };
 
-  // Mostra il modal di conferma per l'eliminazione
   const confirmDelete = (post) => {
     setPostToDelete(post);
     setShowDeleteModal(true);
   };
 
-  // Elimina il post
   const deletePost = async () => {
     try {
       const token = getToken();
@@ -111,7 +105,6 @@ const MyPosts = () => {
         }
       );
 
-      // Aggiorna la lista dei post dopo l'eliminazione
       setUserPosts(userPosts.filter((post) => post._id !== postToDelete._id));
 
       setShowDeleteModal(false);
@@ -138,7 +131,6 @@ const MyPosts = () => {
     }
   };
 
-  // Apre il modal di modifica e imposta i dati del post
   const openEditModal = (post) => {
     setEditingPost(post);
     setFormData({
@@ -150,7 +142,6 @@ const MyPosts = () => {
     setShowEditModal(true);
   };
 
-  // Gestisce i cambiamenti nei campi del form
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "readTimeValue") {
@@ -166,7 +157,6 @@ const MyPosts = () => {
     }
   };
 
-  // Aggiorna il post
   const updatePost = async (e) => {
     e.preventDefault();
     try {
@@ -190,7 +180,6 @@ const MyPosts = () => {
         }
       );
 
-      // Aggiorna la lista dei post con il post modificato
       setUserPosts(
         userPosts.map((post) =>
           post._id === editingPost._id ? response.data : post
@@ -336,7 +325,6 @@ const MyPosts = () => {
         </Alert>
       )}
 
-      {/* Modal per conferma eliminazione */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Conferma eliminazione</Modal.Title>
@@ -355,7 +343,6 @@ const MyPosts = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal per modifica post */}
       <Modal
         show={showEditModal}
         onHide={() => setShowEditModal(false)}

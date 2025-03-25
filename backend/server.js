@@ -8,7 +8,6 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import googleStrategy from "./middlewares/passport.config.js";
 import passport from "passport";
-/* import items from "./modelli/items.js"; */
 
 const app = express()
 passport.use(googleStrategy);
@@ -19,7 +18,7 @@ app.use((req, res, next) => {
 
 
 app.use(cors({
-    origin: ['http://localhost:3000', // URL del tuo frontend React
+    origin: ['http://localhost:3000',
         'https://lama-blog-pi.vercel.app',
         'https://lamablog-e0tm.onrender.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -30,12 +29,12 @@ app.use(cors({
 
 app.use(express.json());
 app.use("/api", routerAuthore);
-app.use("/api", routerPost);  // aggiungi un prefisso per le route
+app.use("/api", routerPost);
 app.use('/api', likeRouter);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-mongoose.connect(process.env.MONGO_STRING)  // rimuovi le opzioni deprecate
+mongoose.connect(process.env.MONGO_STRING)
     .then(() => console.log("Connesso a MongoDB"))
     .catch(err => console.error("Errore di connessione:", err));
 

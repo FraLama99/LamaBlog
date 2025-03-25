@@ -22,7 +22,6 @@ const verifyToken = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log('🔓 Token decodificato:', decoded);
 
-        // Importante: salviamo l'ID dell'utente in req.user
         req.user = { id: decoded.id };
         console.log('👤 ID utente salvato in req.user:', req.user);
 

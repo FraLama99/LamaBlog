@@ -47,12 +47,10 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
     setCurrentPage(newPage);
   };
 
-  // Effetto per il caricamento iniziale dei post
   useEffect(() => {
     fetchBlogPosts();
   }, [currentPage, perPage]);
 
-  // Effetto per il filtraggio dei post
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredPosts(posts);
@@ -66,7 +64,6 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
 
   return (
     <Container>
-      {/* Paginazione superiore */}
       <Row className="mb-4 justify-content-center">
         <Col xs="auto">
           <Button
@@ -91,7 +88,6 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
         </Col>
       </Row>
 
-      {/* Lista dei post */}
       <Row>
         {filteredPosts.map((post, i) => (
           <Col
@@ -106,7 +102,6 @@ const BlogList = ({ searchQuery, page = 1, perPage = 9 }) => {
         ))}
       </Row>
 
-      {/* Paginazione inferiore */}
       <Row className="mt-4 justify-content-center">
         <Col xs="auto">
           <Button

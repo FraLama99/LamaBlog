@@ -12,7 +12,7 @@ import {
 import { useParams } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
 import BlogLike from "../../components/likes/BlogLike";
-import Comments from "../../components/comments/Comments"; // Importa il componente Comments
+import Comments from "../../components/comments/Comments";
 import { useAuth } from "../../utils/AuthContext";
 import axios from "axios";
 import "./styles.css";
@@ -21,7 +21,6 @@ const BlogDetail = () => {
   const { id } = useParams();
   const { getToken } = useAuth();
 
-  // Stato per tracciare l'utente corrente e lo stato di autenticazione
   const [userData, setUserData] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
 
@@ -34,7 +33,6 @@ const BlogDetail = () => {
     message: "",
   });
 
-  // Verifica l'autenticazione e ottiene i dati dell'utente
   const checkAuth = async () => {
     const token = getToken();
     if (token) {
@@ -60,12 +58,10 @@ const BlogDetail = () => {
     }
   };
 
-  // Esegui checkAuth all'avvio del componente
   useEffect(() => {
     checkAuth();
   }, []);
 
-  // Gestisce il cambio di like sul post
   const handleLikesChange = async (newLikes) => {
     try {
       const token = getToken();
@@ -102,7 +98,6 @@ const BlogDetail = () => {
     }
   };
 
-  // Carica il post
   const fetchPost = async () => {
     try {
       setLoading(true);
@@ -123,12 +118,10 @@ const BlogDetail = () => {
     fetchPost();
   }, [id]);
 
-  // Gestione dei commenti aggiunti
   const handleCommentAdded = (updatedPost) => {
     setPost(updatedPost);
   };
 
-  // Gestione dei commenti eliminati
   const handleCommentDeleted = (commentId) => {
     setPost((prev) => {
       return {
@@ -138,7 +131,6 @@ const BlogDetail = () => {
     });
   };
 
-  // Gestione dei commenti aggiornati
   const handleCommentUpdated = (updatedPost) => {
     setPost(updatedPost);
   };
@@ -181,7 +173,6 @@ const BlogDetail = () => {
         <Col md={10} lg={8}>
           <Card className="border-0 shadow-sm mb-5">
             <Card.Body className="p-4">
-              {/* Titolo e metadata */}
               <h1 className="display-4 mb-3">{post.title}</h1>
 
               <div className="d-flex justify-content-between align-items-center mb-4">
@@ -199,7 +190,6 @@ const BlogDetail = () => {
                 </div>
               </div>
 
-              {/* Immagine di copertina */}
               <div className="blog-image-container mb-4">
                 <Image
                   className="blog-detail-cover"
@@ -215,12 +205,10 @@ const BlogDetail = () => {
                 />
               </div>
 
-              {/* Contenuto */}
               <div className="blog-detail-content my-4">
                 <p className="lead">{post.content}</p>
               </div>
 
-              {/* Interazioni */}
               <div className="d-flex justify-content-between align-items-center border-top pt-3">
                 <div className="blog-detail-likes">
                   <BlogLike postId={post._id} />
@@ -234,7 +222,6 @@ const BlogDetail = () => {
             </Card.Body>
           </Card>
 
-          {/* Sezione commenti - Ora come componente separato */}
           <Comments
             post={post}
             isAuth={isAuth}
